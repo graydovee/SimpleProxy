@@ -2,8 +2,13 @@
 <proxys>
     <proxy id="proxyName" class="cn.graydove.test.TestClass">
         <method name="print">
-            <prefix bean="cn.graydove.test.Test2" mtd="test1" />
-            <suffix bean="cn.graydove.test.Test2" mtd="test2" />
+            <prefix bean="cn.graydove.test.Test2" mtd="test1">
+                <arg value="1"/>
+                <!--<arg value="2"/>-->
+            </prefix>
+            <suffix bean="cn.graydove.test.Test2" mtd="test2">
+                <arg value="1"/>
+            </suffix>
         </method>
     </proxy>
 </proxys>

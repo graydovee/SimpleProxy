@@ -49,9 +49,9 @@ public class Analysis {
                 Attribute attribute = (Attribute) j.next();
                 String name = attribute.getName();
                 String value = attribute.getValue();
-                if(name.equals("id")){
+                if("id".equals(name)){
                     proxyClass.setId(value);
-                }else if(name.equals("class")){
+                }else if("class".equals(name)){
                     proxyClass.setClassName(value);
                 }
             }
@@ -65,7 +65,7 @@ public class Analysis {
                     Attribute attribute = (Attribute) k.next();
                     String name = attribute.getName();
                     String value = attribute.getValue();
-                    if(name.equals("name")){
+                    if("name".equals(name)){
                         proxyMethods.setMethodName(value);
                     }
                 }
@@ -79,10 +79,23 @@ public class Analysis {
                         Attribute attribute = (Attribute)iter.next();
                         String name = attribute.getName();
                         String value = attribute.getValue();
-                        if(name.equals("bean")){
+                        if("bean".equals(name)){
                             proxyMethod.setClassName(value);
-                        }else if(name.equals("mtd")){
+                        }else if("mtd".equals(name)){
                             proxyMethod.setMethodName(value);
+                        }
+                    }
+
+                    //读取args参数
+                    for(Iterator iter = ele.elementIterator("arg");iter.hasNext();){
+                        Element el = (Element) iter.next();
+                        if("arg".equals(el.getName())){
+                            for(Iterator it = el.attributeIterator();it.hasNext();){
+                                Attribute at = (Attribute) it.next();
+                                if("value".equals(at.getName())){
+                                    proxyMethod.addArgs(at.getValue());
+                                }
+                            }
                         }
                     }
 

@@ -78,7 +78,7 @@ public class Proxy implements InvocationHandler {
             Method[] methods = clazz.getMethods();
             for(Method m:methods){
                 if(m.getName().equals(method.getMethodName())){
-                    m.invoke(clazz.newInstance());
+                    m.invoke(clazz.newInstance(),method.getArgs().toArray());
                 }
             }
         }
