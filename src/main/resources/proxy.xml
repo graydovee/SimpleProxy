@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxys>
+    <proxy id="proxyName" class="cn.graydove.test.TestClass">
+        <method name="print">
+            <prefix bean="cn.graydove.test.Test2" mtd="test1" />
+            <suffix bean="cn.graydove.test.Test2" mtd="test2" />
+        </method>
+    </proxy>
+</proxys>
