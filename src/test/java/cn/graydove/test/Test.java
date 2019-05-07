@@ -1,24 +1,16 @@
 package cn.graydove.test;
 
-import cn.graydove.Proxy;
+import cn.graydove.ProxyBeanFactory;
+import cn.graydove.SimpleProxy;
 
 public class Test {
 
 	public static void main(String[] args) {
 		
 //		TriAngleHandler h = new TriAngleHandler(g);
-		Proxy p = new Proxy();
+		ProxyBeanFactory factory = ProxyBeanFactory.getInstance();
 
-		TestInterface proxy = null;
-		try {
-			proxy = (TestInterface)p.getProxy("cn.graydove.test.TestClass");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		}
+		TestInterface proxy = (TestInterface)factory.getProxyBean("testProxy");
 
 		proxy.print(1);
 

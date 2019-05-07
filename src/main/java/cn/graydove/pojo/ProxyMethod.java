@@ -6,26 +6,26 @@ import java.util.List;
 public class ProxyMethod {
     private String className;
     private String methodName;
-    private List<String> args;
+    private List<Param> params;
 
     @Override
     public String toString() {
         return "ProxyMethod{" +
                 "className='" + className + '\'' +
                 ", methodName='" + methodName + '\'' +
-                ", args=" + args +
+                ", args=" + params +
                 '}';
     }
 
-    public List<String> getArgs() {
-        return args;
+    public List<Param> getParams() {
+        return params;
     }
 
-    public void addArgs(String arg){
-        if(args==null){
-            args = new ArrayList<>();
+    public void addArgs(Param arg){
+        if(params==null){
+            params = new ArrayList<>();
         }
-        this.args.add(arg);
+        this.params.add(arg);
     }
 
     public String getClassName() {

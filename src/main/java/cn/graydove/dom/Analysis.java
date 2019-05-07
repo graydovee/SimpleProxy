@@ -1,5 +1,6 @@
 package cn.graydove.dom;
 
+import cn.graydove.pojo.Param;
 import cn.graydove.pojo.ProxyClass;
 import cn.graydove.pojo.ProxyMethod;
 import cn.graydove.pojo.ProxyMethods;
@@ -86,15 +87,22 @@ public class Analysis {
                         }
                     }
 
-                    //读取args参数
-                    for(Iterator iter = ele.elementIterator("arg");iter.hasNext();){
+                    //读取param参数
+                    for(Iterator iter = ele.elementIterator("param");iter.hasNext();){
                         Element el = (Element) iter.next();
-                        if("arg".equals(el.getName())){
+                        if("param".equals(el.getName())){
+                            String name = null;
+                            String value = null;
                             for(Iterator it = el.attributeIterator();it.hasNext();){
                                 Attribute at = (Attribute) it.next();
                                 if("value".equals(at.getName())){
-                                    proxyMethod.addArgs(at.getValue());
+                                    value = at.getValue();
+                                }else if("class".equals(at.getName())){
+                                    name = at.getValue();
                                 }
+                            }
+                            if(name!=null && value!=null){
+                                proxyMethod.addArgs(new Param(name,value));
                             }
                         }
                     }
