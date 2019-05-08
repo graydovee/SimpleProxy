@@ -1,10 +1,10 @@
 package cn.graydove.test;
 
-public class TestClass implements TestInterface{
+public class TestClass implements TestInterface {
 
     @Override
     public void print(int arg) {
-        System.out.println("invoke TestClass's method！arg:"+arg);
+        System.out.println("invoke TestClass's method！arg:" + arg);
     }
 
     @Override

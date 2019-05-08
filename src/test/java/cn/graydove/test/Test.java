@@ -4,20 +4,26 @@ import cn.graydove.simpleProxy.ProxyBeanFactory;
 
 public class Test {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		ProxyBeanFactory factory = ProxyBeanFactory.getInstance();
+        ProxyBeanFactory factory = ProxyBeanFactory.getInstance();
 
-		TestInterface proxy = (TestInterface)factory.getProxyBean("testProxy");
+        TestInterface proxy = (TestInterface) factory.getProxyBean("testProxy");
 
-		proxy.print(1);
-		proxy.print2();
+        proxy.print(1);
+        System.out.println();
+        proxy.print2();
 
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-		TestInterface proxy2 = (TestInterface)factory.getProxyBean("testProxy2");
+        TestInterface proxy2 = (TestInterface) factory.getProxyBean("testProxy2");
 
-		proxy2.print(1);
-	}
+        proxy2.print(1);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        TestInterface proxy3 = (TestInterface) factory.getProxyBean("testProxy3");
+
+        proxy3.print(1);
+    }
 
 }

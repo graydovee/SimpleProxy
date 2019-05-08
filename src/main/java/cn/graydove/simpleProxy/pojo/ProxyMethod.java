@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ProxyMethod {
     private String className;
+    private String bean;
     private String methodName;
     private List<Param> params;
 
@@ -13,16 +14,26 @@ public class ProxyMethod {
         return "ProxyMethod{" +
                 "className='" + className + '\'' +
                 ", methodName='" + methodName + '\'' +
-                ", args=" + params +
+                ", params=" + params +
+                ", bean='" + bean + '\'' +
                 '}';
     }
+
+    public String getBean() {
+        return bean;
+    }
+
+    public void setBean(String bean) {
+        this.bean = bean;
+    }
+
 
     public List<Param> getParams() {
         return params;
     }
 
-    public void addArgs(Param arg){
-        if(params==null){
+    public void addArgs(Param arg) {
+        if (params == null) {
             params = new ArrayList<>();
         }
         this.params.add(arg);

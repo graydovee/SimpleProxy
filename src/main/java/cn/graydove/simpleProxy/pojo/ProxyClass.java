@@ -42,7 +42,7 @@ public class ProxyClass {
         this.methods = methods;
     }
 
-    public void addMethods(ProxyMethods method){
+    public void addMethods(ProxyMethods method) {
         this.methods.add(method);
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProxyBeanFactory {
-    private Map<String,Object> map;
+    private Map<String, Object> map;
     private List<ProxyClass> proxyClasses;
 
     private static ProxyBeanFactory instance;
@@ -18,7 +18,7 @@ public class ProxyBeanFactory {
         map = new HashMap<>();
 
         Analysis analysis;
-        if(path==null)
+        if (path == null)
             analysis = new Analysis();
         else
             analysis = new Analysis(path);
@@ -30,17 +30,17 @@ public class ProxyBeanFactory {
         }
     }
 
-    public static ProxyBeanFactory getInstance(){
+    public static ProxyBeanFactory getInstance() {
         return getInstance(null);
     }
 
-    public static ProxyBeanFactory getInstance(String path){
-        if(instance==null){
+    public static ProxyBeanFactory getInstance(String path) {
+        if (instance == null) {
             //双重检测锁
-            synchronized (ProxyBeanFactory.class){
+            synchronized (ProxyBeanFactory.class) {
                 ProxyBeanFactory inst = instance;
-                if(inst==null){
-                    synchronized (ProxyBeanFactory.class){
+                if (inst == null) {
+                    synchronized (ProxyBeanFactory.class) {
                         inst = new ProxyBeanFactory(path);
                     }
                     instance = inst;
@@ -50,23 +50,23 @@ public class ProxyBeanFactory {
         return instance;
     }
 
-    public Object getProxyBean(String id){
-        if(id == null)
+    public Object getProxyBean(String id) {
+        if (id == null)
             return null;
         Object obj = map.get(id);
-        if(obj==null){
+        if (obj == null) {
             //双重检测锁
-            synchronized (ProxyBeanFactory.class){
+            synchronized (ProxyBeanFactory.class) {
                 Object o = map.get(id);
-                if(o == null){
-                    synchronized (ProxyBeanFactory.class){
-                        for(ProxyClass proxyClass:proxyClasses){
-                            if(id.equals(proxyClass.getId())){
+                if (o == null) {
+                    synchronized (ProxyBeanFactory.class) {
+                        for (ProxyClass proxyClass : proxyClasses) {
+                            if (id.equals(proxyClass.getId())) {
                                 try {
-                                    if(proxyClass.getClassName()!=null && proxyClass.getBean()==null)
+                                    if (proxyClass.getClassName() != null && proxyClass.getBean() == null)
                                         o = new SimpleProxy().getProxy(proxyClass);
-                                    else if(proxyClass.getClassName()==null && proxyClass.getBean()!=null)
-                                        o = new SimpleProxy().getProxy(proxyClass,getProxyBean(proxyClass.getBean()));
+                                    else if (proxyClass.getClassName() == null && proxyClass.getBean() != null)
+                                        o = new SimpleProxy().getProxy(proxyClass, getProxyBean(proxyClass.getBean()));
                                     else
                                         throw new RuntimeException("参数错误");
                                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
@@ -75,7 +75,7 @@ public class ProxyBeanFactory {
                             }
                         }
                         obj = o;
-                        map.put(id,obj);
+                        map.put(id, obj);
                     }
                 }
 

@@ -4,6 +4,7 @@ public class ProxyMethods {
     private String methodName;
     private ProxyMethod suffix;
     private ProxyMethod prefix;
+
     @Override
     public String toString() {
         return "ProxyMethods{" +

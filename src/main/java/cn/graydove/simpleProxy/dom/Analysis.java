@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class Analysis {
     private String XMLPath;
+
     public Analysis(String path) {
         this.XMLPath = path;
     }
@@ -42,76 +43,78 @@ public class Analysis {
         ProxyMethod proxyMethod;
 
         //遍历proxy节点
-        for(Iterator i = proxys.elementIterator("proxy");i.hasNext();){
+        for (Iterator i = proxys.elementIterator("proxy"); i.hasNext(); ) {
             proxyClass = new ProxyClass();
-            Element proxy = (Element)i.next();
+            Element proxy = (Element) i.next();
             //读取proxy的属性
-            for ( Iterator j = proxy.attributeIterator(); j.hasNext(); ) {
+            for (Iterator j = proxy.attributeIterator(); j.hasNext(); ) {
                 Attribute attribute = (Attribute) j.next();
                 String name = attribute.getName();
                 String value = attribute.getValue();
-                if("id".equals(name)){
+                if ("id".equals(name)) {
                     proxyClass.setId(value);
-                }else if("class".equals(name)){
+                } else if ("class".equals(name)) {
                     proxyClass.setClassName(value);
-                }else if("bean".equals(name)){
+                } else if ("bean".equals(name)) {
                     proxyClass.setBean(value);
                 }
             }
             //遍历method节点
-            for ( Iterator j = proxy.elementIterator("method"); j.hasNext();) {
+            for (Iterator j = proxy.elementIterator("method"); j.hasNext(); ) {
                 proxyMethods = new ProxyMethods();
                 Element methods = (Element) j.next();
 
                 //读取method属性
-                for ( Iterator k = methods.attributeIterator(); k.hasNext(); ) {
+                for (Iterator k = methods.attributeIterator(); k.hasNext(); ) {
                     Attribute attribute = (Attribute) k.next();
                     String name = attribute.getName();
                     String value = attribute.getValue();
-                    if("name".equals(name)){
+                    if ("name".equals(name)) {
                         proxyMethods.setMethodName(value);
                     }
                 }
                 //读取method下的节点
-                for(Iterator k = methods.elementIterator(); k.hasNext();){
+                for (Iterator k = methods.elementIterator(); k.hasNext(); ) {
                     Element ele = (Element) k.next();
 
                     proxyMethod = new ProxyMethod();
-                    //读取suffix和suffix属性
-                    for(Iterator iter = ele.attributeIterator();iter.hasNext();){
-                        Attribute attribute = (Attribute)iter.next();
+                    //读取prefix和suffix属性
+                    for (Iterator iter = ele.attributeIterator(); iter.hasNext(); ) {
+                        Attribute attribute = (Attribute) iter.next();
                         String name = attribute.getName();
                         String value = attribute.getValue();
-                        if("bean".equals(name)){
+                        if ("class".equals(name)) {
                             proxyMethod.setClassName(value);
-                        }else if("mtd".equals(name)){
+                        } else if ("mtd".equals(name)) {
                             proxyMethod.setMethodName(value);
+                        } else if ("bean".equals(name)) {
+                            proxyMethod.setBean(value);
                         }
                     }
 
                     //读取param参数
-                    for(Iterator iter = ele.elementIterator("param");iter.hasNext();){
+                    for (Iterator iter = ele.elementIterator("param"); iter.hasNext(); ) {
                         Element el = (Element) iter.next();
-                        if("param".equals(el.getName())){
+                        if ("param".equals(el.getName())) {
                             String name = null;
                             String value = null;
-                            for(Iterator it = el.attributeIterator();it.hasNext();){
+                            for (Iterator it = el.attributeIterator(); it.hasNext(); ) {
                                 Attribute at = (Attribute) it.next();
-                                if("value".equals(at.getName())){
+                                if ("value".equals(at.getName())) {
                                     value = at.getValue();
-                                }else if("class".equals(at.getName())){
+                                } else if ("class".equals(at.getName())) {
                                     name = at.getValue();
                                 }
                             }
-                            if(name!=null && value!=null){
-                                proxyMethod.addArgs(new Param(name,value));
+                            if (name != null && value != null) {
+                                proxyMethod.addArgs(new Param(name, value));
                             }
                         }
                     }
 
-                    if(ele.getName().equals("suffix")){
+                    if (ele.getName().equals("suffix")) {
                         proxyMethods.setSuffix(proxyMethod);
-                    }else if(ele.getName().equals("prefix")){
+                    } else if (ele.getName().equals("prefix")) {
                         proxyMethods.setPrefix(proxyMethod);
                     }
                 }
