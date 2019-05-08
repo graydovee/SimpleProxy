@@ -25,7 +25,7 @@ public class ProxyBeanFactory {
         try {
             proxyClasses = analysis.analyse();
         } catch (DocumentException e) {
-            System.out.println("XML解析错误");
+            //XML解析错误;
             e.printStackTrace();
         }
     }
@@ -36,6 +36,7 @@ public class ProxyBeanFactory {
 
     public static ProxyBeanFactory getInstance(String path){
         if(instance==null){
+            //双重检测锁
             synchronized (ProxyBeanFactory.class){
                 ProxyBeanFactory inst = instance;
                 if(inst==null){
@@ -54,17 +55,30 @@ public class ProxyBeanFactory {
             return null;
         Object obj = map.get(id);
         if(obj==null){
-            for(ProxyClass proxyClass:proxyClasses){
-                if(id.equals(proxyClass.getId())){
-                    try {
-                        if(proxyClass.getClassName()!=null && proxyClass.getBean()==null)
-                            obj = new SimpleProxy().getProxy(proxyClass);
-                        else if(proxyClass.getClassName()==null && proxyClass.getBean()!=null)
-                            obj = new SimpleProxy().getProxy(proxyClass,getProxyBean(proxyClass.getBean()));
-                    } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                        e.printStackTrace();
+            //双重检测锁
+            synchronized (ProxyBeanFactory.class){
+                Object o = map.get(id);
+                if(o == null){
+                    synchronized (ProxyBeanFactory.class){
+                        for(ProxyClass proxyClass:proxyClasses){
+                            if(id.equals(proxyClass.getId())){
+                                try {
+                                    if(proxyClass.getClassName()!=null && proxyClass.getBean()==null)
+                                        o = new SimpleProxy().getProxy(proxyClass);
+                                    else if(proxyClass.getClassName()==null && proxyClass.getBean()!=null)
+                                        o = new SimpleProxy().getProxy(proxyClass,getProxyBean(proxyClass.getBean()));
+                                    else
+                                        throw new RuntimeException("参数错误");
+                                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        obj = o;
+                        map.put(id,obj);
                     }
                 }
+
             }
         }
         return obj;

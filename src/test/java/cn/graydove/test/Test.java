@@ -12,9 +12,12 @@ public class Test {
 
 		proxy.print(1);
 		proxy.print2();
-//		TestInterface proxy = (TestInterface)factory.getProxyBean("testProxy2");
-//
-//		proxy.print(1);
+
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+		TestInterface proxy2 = (TestInterface)factory.getProxyBean("testProxy2");
+
+		proxy2.print(1);
 	}
 
 }
