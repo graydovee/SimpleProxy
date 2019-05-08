@@ -1,9 +1,9 @@
-package cn.graydove.dom;
+package cn.graydove.simpleProxy.dom;
 
-import cn.graydove.pojo.Param;
-import cn.graydove.pojo.ProxyClass;
-import cn.graydove.pojo.ProxyMethod;
-import cn.graydove.pojo.ProxyMethods;
+import cn.graydove.simpleProxy.pojo.Param;
+import cn.graydove.simpleProxy.pojo.ProxyClass;
+import cn.graydove.simpleProxy.pojo.ProxyMethod;
+import cn.graydove.simpleProxy.pojo.ProxyMethods;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class Analysis {
     private String XMLPath;
-    public Analysis(String fileName) {
-        this.XMLPath = "src/main/resources/"+fileName;
+    public Analysis(String path) {
+        this.XMLPath = path;
     }
 
     public Analysis() {
-        this("proxy.xml");
+        this("src/main/resources/proxy.xml");
     }
 
     public List<ProxyClass> analyse() throws DocumentException {
@@ -54,6 +54,8 @@ public class Analysis {
                     proxyClass.setId(value);
                 }else if("class".equals(name)){
                     proxyClass.setClassName(value);
+                }else if("bean".equals(name)){
+                    proxyClass.setBean(value);
                 }
             }
             //遍历method节点

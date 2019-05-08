@@ -1,4 +1,4 @@
-package cn.graydove.pojo;
+package cn.graydove.simpleProxy.pojo;
 
 public class ProxyMethods {
     private String methodName;

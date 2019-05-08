@@ -1,4 +1,4 @@
-package cn.graydove.pojo;
+package cn.graydove.simpleProxy.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,16 @@ import java.util.List;
 public class ProxyClass {
     private String id;
     private String className;
+    private String bean;
+
+    public String getBean() {
+        return bean;
+    }
+
+    public void setBean(String bean) {
+        this.bean = bean;
+    }
+
     private List<ProxyMethods> methods = new ArrayList<>();
 
     public String getClassName() {
@@ -41,6 +51,7 @@ public class ProxyClass {
         return "ProxyClass{" +
                 "id='" + id + '\'' +
                 ", className='" + className + '\'' +
+                ", bean='" + bean + '\'' +
                 ", methods=" + methods +
                 '}';
     }

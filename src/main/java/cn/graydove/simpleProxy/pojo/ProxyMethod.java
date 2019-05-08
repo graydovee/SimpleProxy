@@ -1,4 +1,4 @@
-package cn.graydove.pojo;
+package cn.graydove.simpleProxy.pojo;
 
 import java.util.ArrayList;
 import java.util.List;

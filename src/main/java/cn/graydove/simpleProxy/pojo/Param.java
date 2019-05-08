@@ -1,4 +1,4 @@
-package cn.graydove.pojo;
+package cn.graydove.simpleProxy.pojo;
 
 public class Param {
     private String className;

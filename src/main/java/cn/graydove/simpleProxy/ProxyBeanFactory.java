@@ -1,7 +1,7 @@
-package cn.graydove;
+package cn.graydove.simpleProxy;
 
-import cn.graydove.dom.Analysis;
-import cn.graydove.pojo.ProxyClass;
+import cn.graydove.simpleProxy.dom.Analysis;
+import cn.graydove.simpleProxy.pojo.ProxyClass;
 import org.dom4j.DocumentException;
 
 import java.util.HashMap;
@@ -9,14 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 public class ProxyBeanFactory {
-    private SimpleProxy simpleProxy;
     private Map<String,Object> map;
     private List<ProxyClass> proxyClasses;
 
     private static ProxyBeanFactory instance;
 
     private ProxyBeanFactory(String path) {
-        simpleProxy = new SimpleProxy();
         map = new HashMap<>();
 
         Analysis analysis;
@@ -54,13 +52,15 @@ public class ProxyBeanFactory {
     public Object getProxyBean(String id){
         if(id == null)
             return null;
-        Object obj = null;
-        obj = map.get(id);
+        Object obj = map.get(id);
         if(obj==null){
             for(ProxyClass proxyClass:proxyClasses){
                 if(id.equals(proxyClass.getId())){
                     try {
-                        obj = simpleProxy.getProxy(proxyClass);
+                        if(proxyClass.getClassName()!=null && proxyClass.getBean()==null)
+                            obj = new SimpleProxy().getProxy(proxyClass);
+                        else if(proxyClass.getClassName()==null && proxyClass.getBean()!=null)
+                            obj = new SimpleProxy().getProxy(proxyClass,getProxyBean(proxyClass.getBean()));
                     } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                         e.printStackTrace();
                     }

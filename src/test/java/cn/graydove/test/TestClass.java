@@ -11,4 +11,9 @@ public class TestClass implements TestInterface{
     public void print() {
         System.out.println("invoke TestClass's method！");
     }
+
+    @Override
+    public void print2() {
+        System.out.println("invoke TestClass's method！---print2");
+    }
 }

@@ -1,10 +1,10 @@
-package cn.graydove;
+package cn.graydove.simpleProxy;
 
 
-import cn.graydove.pojo.Param;
-import cn.graydove.pojo.ProxyClass;
-import cn.graydove.pojo.ProxyMethod;
-import cn.graydove.pojo.ProxyMethods;
+import cn.graydove.simpleProxy.pojo.Param;
+import cn.graydove.simpleProxy.pojo.ProxyClass;
+import cn.graydove.simpleProxy.pojo.ProxyMethod;
+import cn.graydove.simpleProxy.pojo.ProxyMethods;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -26,6 +26,15 @@ public class SimpleProxy implements InvocationHandler {
         return Proxy.newProxyInstance(clazz.getClassLoader(),clazz.getInterfaces(),this);
     }
 
+    public Object getProxy(ProxyClass proxyClass, Object obj) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        this.proxyClass = proxyClass;
+        if(proxyClass==null)
+            return null;
+        Class clazz = obj.getClass();
+        this.obj = obj;
+
+        return Proxy.newProxyInstance(clazz.getClassLoader(),clazz.getInterfaces(),this);
+    }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -41,9 +50,11 @@ public class SimpleProxy implements InvocationHandler {
             }
         }
 
-        methodInvoke(prefix);
+        if(prefix != null)
+            methodInvoke(prefix);
         Object invoke = method.invoke(obj, args);
-        methodInvoke(suffix);
+        if(suffix != null)
+            methodInvoke(suffix);
         return invoke;
     }
 
@@ -58,7 +69,7 @@ public class SimpleProxy implements InvocationHandler {
             for(Method m:methods){
                 boolean flag = true;
                 if(m.getName().equals(method.getMethodName())){
-                    if(m.getParameterTypes().length==args.length){
+                    if(args!=null && m.getParameterTypes().length==args.length){
                         int i=0;
                         for(Class c:m.getParameterTypes()){
                             Class argc = args[i].getClass();
@@ -67,7 +78,7 @@ public class SimpleProxy implements InvocationHandler {
                             }
                             ++i;
                         }
-                    }else{
+                    }else if(!(args==null && m.getParameterTypes().length==0)){
                         flag = false;
                     }
                 }else{
@@ -84,6 +95,9 @@ public class SimpleProxy implements InvocationHandler {
     }
 
     private Object[] analyseParams(List<Param> params){
+        if(params==null){
+            return null;
+        }
         Object[] args = new Object[params.size()];
         int i=0;
         for(Param param:params){
