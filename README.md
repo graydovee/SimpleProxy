@@ -1,0 +1,5 @@
+# SimpleProxy
+
+一个简单的java代理模式框架
+
+配置完配置文件后可通过ProxyBeanFactory类的getProxyBean方法来获取代理对象
